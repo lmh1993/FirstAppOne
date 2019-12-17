@@ -1,0 +1,22 @@
+<div class="row mt-5">
+    <div class="col-md-4 mb-3" *ngFor="let poster of ownPosters">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title overflow-hidden" style="height: 2.5rem;">{{poster.title}}</h5>
+                <p class="card-text overflow-auto" style="height: 4rem;">{{poster.description}}</p>
+                <a routerLink="/updateposter/{{poster._id}}" class="btn btn-outline-warning">Manage Detail</a>
+            </div>
+            <div class="card-footer text-muted">
+                {{poster.datetime | date:'medium'}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3" *ngIf="ownPosters.length===0">
+        <div class="card text-center">
+            <div class="card-body">
+                Create a poster now
+                <a routerLink="/createposter" class="btn btn-outline-primary">Create</a>
+            </div>
+        </div>
+    </div>
+</div>

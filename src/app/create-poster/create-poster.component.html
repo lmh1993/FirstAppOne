@@ -1,0 +1,27 @@
+<div class="row pt-5">
+    <div class="col-md-12 mx-auto">
+        <div class="card rounded-0">
+            <div class="card-header">
+                <h3 class="mb-0">Create Poster</h3>
+            </div>
+            <div class="card-body">
+                <form class="form">
+                    <div class="form-group" [ngClass]="{'was-validated': submitted}">
+                        <label for="poster">Title</label>
+                        <input [(ngModel)]="poster.title" name="poster" type="text" 
+                        class="form-control rounded-0" required maxlength="30">                
+                        <!-- <small class="form-text text-muted" *ngIf="!submitted">Enter a valid poster address</small> -->
+                        <span class="invalid-feedback"> Title can not be blank</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{'was-validated': submitted}">
+                        <label for="description">Description</label>
+                        <textarea class="form-control rounded-0" [(ngModel)]="poster.description" name="description" 
+                        id="description" required></textarea>
+                        <span class="invalid-feedback">Description cannot be blank</span>
+                    </div>
+                    <button (click)="createPoster(); submitted = true" type="button" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

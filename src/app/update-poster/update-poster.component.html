@@ -1,0 +1,20 @@
+<div class="row mt-5">
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <label for="title" class="float-left">Title</label>
+                <input [(ngModel)]="poster.title" name="title" type="text" value="poster.title"
+                class="form-control rounded-0" required maxlength="30" #title="ngModel">
+                <label for="description" class="float-left">Description</label>
+                <textarea [(ngModel)]="poster.description" name="description" type="text" 
+                class="form-control rounded-0" required #description="ngModel"></textarea>
+            </div>
+            <p> Created at {{poster.datetime | date:'medium'}} </p>
+            <div class="card-footer text-muted">
+                <button (click)="goBack(); submitted = true" type="button" class="btn btn-primary float-left">Go Back</button>
+                <button (click)="updatePoster(); submitted = true" type="button" class="btn btn-outline-warning float-right">Submit</button>
+                <button (click)="openDeleteDialog(); submitted = true" type="button" class="btn btn-danger float-middle">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

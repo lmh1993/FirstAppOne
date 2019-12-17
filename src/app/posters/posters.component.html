@@ -1,0 +1,14 @@
+<div class="row mt-5">
+    <div class="col-md-4 mb-3" *ngFor="let poster of posters">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title overflow-hidden" style="height: 2.5rem;">{{poster.title}}</h5>
+                <p class="card-text overflow-auto" style="height: 4rem;">{{poster.description}}</p>
+                <a class="nav-link" [routerLink]="['/readposter', poster._id]" class="btn btn-primary">Detail</a>
+            </div>
+            <div class="card-footer text-muted">
+                {{poster.datetime | date:'medium'}}
+            </div>
+        </div>
+    </div>
+</div>
