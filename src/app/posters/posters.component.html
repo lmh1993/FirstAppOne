@@ -1,14 +1,42 @@
-<div class="row mt-5">
-    <div class="col-md-4 mb-3" *ngFor="let poster of posters">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <h5 class="card-title overflow-hidden" style="height: 2.5rem;">{{poster.title}}</h5>
-                <p class="card-text overflow-auto" style="height: 4rem;">{{poster.description}}</p>
-                <a class="nav-link" [routerLink]="['/readposter', poster._id]" class="btn btn-primary">Detail</a>
-            </div>
-            <div class="card-footer text-muted">
-                {{poster.datetime | date:'medium'}}
-            </div>
-        </div>
-    </div>
+<div class="row mt-4">
+    <mat-card class="col-md-3 ml-5 mr-4 mb-4" *ngFor="let poster of posters">
+        <mat-card-title-group>
+        <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{poster.jobTitle}}</mat-card-title>
+        <mat-card-subtitle>
+            {{poster.companyName}}
+            <!-- 24 <span [innerHTML]="male"></span> -->
+        </mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-sm-image style="cursor:pointer" (click)="openDetailDialog(poster._id)" 
+        [src]="poster.iconUrl" *ngIf="poster.iconUrl">
+        <img mat-card-sm-image style="cursor:pointer" (click)="openDetailDialog(poster._id)" 
+        [src]="iconUrl" *ngIf="!poster.iconUrl">
+        </mat-card-title-group>
+
+        <mat-card-content class="overflow-auto pt-1" style="height: 9rem;">
+            {{poster.description}}
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button class="button">LIKE</button>
+            <button mat-button class="button">SHARE</button>
+        </mat-card-actions>
+    </mat-card>
 </div>
+
+<style>
+    .mat-card-sm-image {
+        opacity: 0.9;
+    }
+
+    .mat-card-sm-image:hover { 
+        opacity : 1;
+        transform: scale(1.05);
+    }
+
+    .button:hover { 
+        opacity : 1;
+        transform: scale(1.1);
+    }
+</style> 

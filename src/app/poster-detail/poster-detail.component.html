@@ -1,16 +1,8 @@
-<div class="row mt-5">
-    <div class="col-md-4 mb-3">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <h5 class="card-title overflow-hidden" style="height: 2.5rem;">{{poster.title}}</h5>
-                <p class="card-text overflow-auto" style="height: 4rem;">{{poster.description}}</p>
-                <button (click)="goBack(); submitted = true" type="button" class="btn btn-primary float-left">Go Back</button>
-                <button *ngIf="checkUserId()" [routerLink]="['/updateposter', poster._id]" 
-                        type="button" class="btn btn-outline-warning float-right">Update</button>
-            </div>
-            <div class="card-footer text-muted">
-                {{poster.datetime | date:'medium'}}
-            </div>
-        </div>
-    </div>
+
+<h5 mat-dialog-title>Company information for</h5>
+<mat-dialog-content class="pb-4">
+</mat-dialog-content>
+<div>
+    <button mat-dialog-close="cancel" class="btn btn-primary float-left">Go Back</button>
 </div>
+

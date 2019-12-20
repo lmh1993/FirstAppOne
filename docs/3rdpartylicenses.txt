@@ -87,6 +87,10 @@ MIT
 @angular/forms
 MIT
 
+@angular/material/button
+
+@angular/material/card
+
 @angular/material/dialog
 
 @angular/platform-browser

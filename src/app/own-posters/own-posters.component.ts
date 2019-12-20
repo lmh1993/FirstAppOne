@@ -11,6 +11,8 @@ import { AuthService } from '../auth.service';
 })
 export class OwnPostersComponent implements OnInit {
   ownPosters = [];
+  finishInit = false;
+  iconUrl = "https://res.cloudinary.com/di8upirgz/image/upload/v1576801740/smallposter/logo_here_xvpclg.png";
 
   constructor(private _posterService: PosterService,
               private _authService: AuthService, 
@@ -22,6 +24,7 @@ export class OwnPostersComponent implements OnInit {
       .subscribe(
         res => {
           this.ownPosters = res;
+          this.finishInit = true;
         },
         err => {
           if (err instanceof HttpErrorResponse) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
 import { PosterService } from '../poster.service';
@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Poster } from '../poster';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-poster-detail',
@@ -18,16 +19,14 @@ export class PosterDetailComponent implements OnDestroy, OnInit {
   submitted=false;
   private ngUnsubscribe = new Subject();
 
-  constructor(private _authService: AuthService, 
+  constructor(@Inject(MAT_DIALOG_DATA)
+              private _authService: AuthService, 
               private _posterService: PosterService,
               private _router: Router,
               private _route: ActivatedRoute, 
               private _location: Location) { }
 
   ngOnInit() {
-    this._id = this._route.snapshot.paramMap.get('id');
-    this.getPoster(this._id);
-    
   }
 
   checkUserId() {
@@ -43,6 +42,7 @@ export class PosterDetailComponent implements OnDestroy, OnInit {
     this._posterService.getPoster(_id)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(poster => {
+        console.log(poster);
         this.poster = poster;
       })
   }

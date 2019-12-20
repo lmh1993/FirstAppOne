@@ -3,7 +3,13 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const User = require('../models/user');
 const Poster = require('../models/poster');
+const Image = require('../models/image');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+const multer = require('multer');
+const image = require('../models/image');
+
 //const db = "mongodb://Minghui:Appie12345@ds211875.mlab.com:11875/heroku_7mt753c8";
 const db = "mongodb://Minghui:Abc123@ds253388.mlab.com:53388/heroku_d469pw2t";
 //const db = "mongodb+srv://Minghui:Appie12345@cluster0-ayo02.mongodb.net/eventsdb?retryWrites=true&w=majority";
@@ -15,8 +21,22 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true}, err => 
         console.log('Connected to mongodb');
     }
 });
-
 mongoose.set('useFindAndModify', false);
+
+//config cloudinary
+cloudinary.config({
+  cloud_name: 'di8upirgz',
+  api_key: '367457436592477',
+  api_secret: 'pQxBbAkOUNDJDKueMhMpU-EUo1I'
+});
+const storage = cloudinaryStorage ({
+  cloudinary: cloudinary,
+  folder: "smallposter",
+  allowedFormats: ["jpg", "png", "jpeg", "ico"],
+  transformation: [{ width:1024, height:1024, crop: "limit" }]
+});
+const parser = multer({ storage: storage });
+
 
 function verifyToken(req, res, next) {
   if (!req.headers.authorization) {
@@ -152,6 +172,53 @@ router.get('/posters/:id', (req, res) => {
   });
 });
 
+
+const upload = parser.single('image');
+router.post('/images', (req,res) => {
+  upload(req,res,(err)=> {
+      if (err) {
+        console.log(err);
+      } else {
+        let posterData = req.body;
+        let image = new Image({imgUrl: req.file.url, publicId:req.file.public_id,
+          posterId: posterData.posterId});
+
+        image.save((error, recordedImage) => {
+          if (error) {
+              console.log("this image cannot be saved to database");
+              res.status(401).send('this image cannot be saved to database');
+          } else {
+              res.status(200).send(recordedImage);
+          }
+        });
+      }
+  });
+});
+
+router.delete('/images/:id', (req,res) => {
+  imageId = req.params.id;
+  publicId = "";
+  Image.findById(imageId, (err,image) => {
+    if (err) {
+      console.log(err);
+    } else {
+      publicId = image.publicId;
+      cloudinary.v2.uploader.destroy(publicId, (err,result) => {
+        if (err) {
+          console.log(err);
+        } 
+      });
+      Image.findByIdAndDelete(imageId, (err, deletedImage) => {
+        if (err) {
+            console.log("Something wrong when deleting data!");
+        } else {
+          res.status(200).send(deletedImage);
+        }
+      });
+    }
+  });
+});
+
 router.put('/posters/:id', (req, res) => {
   id = req.params.id;
   poster = req.body;
@@ -180,8 +247,8 @@ router.delete('/posters/:id', (req, res) => {
 router.post('/ownposters', verifyToken, (req,res) => {
   //let identity = req.headers.authorization.split('.')[0];
   //let identityToken = identity.split(' ')[1];
-  let poster = req.body;
-  Poster.find(poster, (error, posters) => {
+  let userId = req.body;
+  Poster.find(userId, (error, posters) => {
       if (error) {
         res.status(500).send(err);
       } else {

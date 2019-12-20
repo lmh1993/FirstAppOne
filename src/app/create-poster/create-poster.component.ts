@@ -31,7 +31,8 @@ export class CreatePosterComponent implements OnInit {
         res => {
           console.log(res);
           if (res.exist === true) {
-            if (this.poster.title.length > 0 && this.poster.description.length > 0) {
+            if (this.poster.companyName.length > 0 && this.poster.jobTitle.length && 
+                this.poster.description.length > 0) {
               this.poster.userId = userId;
               this.finalizeCreation();
             }

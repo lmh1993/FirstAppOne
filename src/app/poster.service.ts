@@ -5,6 +5,7 @@ import { Poster } from './poster';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +15,11 @@ export class PosterService {
   };
   private _postersUrl = 'api/posters';
   private _ownPostersUrl = 'api/ownposters';
+  private _imagesUrl = 'api/images';
+
   // private _postersUrl = 'http://localhost:8080/api/posters';
   // private _ownPostersUrl = 'http://localhost:8080/api/ownposters';
+  // private _imagesUrl = 'http://localhost:8080/api/images';
 
   constructor(private http: HttpClient, private _authService: AuthService) { }
 
@@ -70,4 +74,16 @@ export class PosterService {
     );
   }
 
+  //upload an image with poster id as one of its identifier
+  uploadImage(imageFile: File, poster) {
+    const formData = new FormData();
+    formData.append('image', imageFile, imageFile.name);
+    formData.append('posterId', poster._id);
+    return this.http.post<any>(this._imagesUrl, formData);
+  }
+
+  deleteImage(imgId) {
+    const url = `${this._imagesUrl}/${imgId}`;
+    return this.http.delete(url);
+  }
 }
